@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import PropTypes from 'prop-types';
+import Deck from './Deck';
 
 function App() {
   const [menuShown, setMenuShown] = useState(true);
