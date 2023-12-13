@@ -8,6 +8,7 @@ function App() {
   const [difficulty, setDifficulty] = useState('easy');
   const [loading, setLoading] = useState(false);
   const [deck, setDeck] = useState([]);
+  const [devMode, setDevMode] = useState(true);
   let numberOfCards = 4;
 
   useEffect(() => {
@@ -35,6 +36,8 @@ function App() {
         />}
       {deck && <Deck
         deck={deck} 
+        setDeck={setDeck}
+        devMode={devMode}
         />}
       {loading && <Loading/>}
     </>
@@ -49,14 +52,31 @@ function Loading() {
   )
 }
 
-function Deck({deck}) {
+function Deck({deck, setDeck, devMode}) {
+
+  function pickCard(e) {
+    const cardId = +e.target.closest('.card').dataset.key;
+
+    const updatedDeck = deck.map((card) => {
+      if (card.id === cardId) {
+        return {...card, beenChosen: true};
+      }
+      return card;
+    });
+
+    setDeck(updatedDeck);
+  }
+
   return (
     <div className='deck-container'>
       {deck.map((card) => {
         return (
-          <div key={card.id} className='card'>
+          <div key={card.id} data-key={card.id} onClick={pickCard} className={`card`}>
             <img key={card.id} src={card.img}></img>
             <p>{card.name}</p>
+            {devMode && (
+              (card.beenChosen ? 'been chosen' : 'not chosen')
+            )}
           </div>
         )
       })}
@@ -70,7 +90,8 @@ Deck.propTypes = {
       id: PropTypes.number.isRequired,
       img: PropTypes.string.isRequired
     })
-  )
+  ),
+  setDeck: PropTypes.func.isRequired,
 };
 
 async function fetchPokemonData(numberOfCards, setLoading) {
@@ -107,8 +128,6 @@ async function fetchPokemonData(numberOfCards, setLoading) {
 
 
 function Menu({difficulty, setDifficulty, menuShown, startGame}) {
-
-
   return (
     menuShown && 
     <div className="menu-container-background">
