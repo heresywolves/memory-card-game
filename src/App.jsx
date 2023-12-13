@@ -8,12 +8,12 @@ function App() {
   const [difficulty, setDifficulty] = useState('easy');
   const [loading, setLoading] = useState(false);
   const [deck, setDeck] = useState([]);
-  const [devMode, setDevMode] = useState(true);
   const [maxScore, setMaxScore] = useState(4);
   const [score, setScore] = useState(0);
   const [numberOfCards, setNumberOfCards] = useState(4);
   const [gameLost, setGameLost] = useState(false);
   const [gameWon, setGameWon] = useState(false);
+  let devMode = true;
 
   useEffect(() => {
     if (difficulty === 'easy') {
@@ -45,11 +45,20 @@ function App() {
     setDeck(pokemonsArr);
   }
 
+  function resetGame() {
+    setMenuShown(true);
+    setGameLost(false);
+    setGameWon(false);
+    setScore(0);
+  }
+
   return (
     <>
       {gameWon && <WinScreen
+        resetGame={resetGame}
       />} 
       {gameLost && <LoseScreen
+        resetGame={resetGame}
       />}
       {menuShown && <Menu 
         difficulty={difficulty}
@@ -74,17 +83,18 @@ function App() {
   )
 }
 
-function WinScreen() {
+
+function WinScreen({resetGame}) {
   return (
-    <div className='win-screen'>
+    <div onClick={resetGame} className='win-screen'>
       <p>You win!</p>
     </div>
   )
 }
 
-function LoseScreen() {
+function LoseScreen({resetGame}) {
   return (
-    <div className='lose-screen'>
+    <div onClick={resetGame} className='lose-screen'>
       <p>You lose!</p>
     </div>
   )
@@ -107,10 +117,9 @@ function Deck({deck, setDeck, devMode, setScore, score, setGameLost}) {
       if (card.id === cardId) {
         if (card.beenChosen) {
           setGameLost(true);
-          setScore(0);
         }
         else {
-          setScore(++score)
+          setScore(++score);
           return {...card, beenChosen: true};
         }
       }
