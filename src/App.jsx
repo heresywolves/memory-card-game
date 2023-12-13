@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import PropTypes from 'prop-types';
-import {fetchData, containsObject} from './utils'
+import {fetchData, containsObject, capitalizeFirstLetter} from './utils'
 
 function App() {
   const [menuShown, setMenuShown] = useState(true);
@@ -54,7 +54,10 @@ function Deck({deck}) {
     <div className='deck-container'>
       {deck.map((card) => {
         return (
-          <img key={card.id} src={card.img}></img>
+          <div key={card.id} className='card'>
+            <img key={card.id} src={card.img}></img>
+            <p>{card.name}</p>
+          </div>
         )
       })}
     </div>
@@ -92,9 +95,12 @@ async function fetchPokemonData(numberOfCards, setLoading) {
   console.log(newPokemonArr);  
 
   return newPokemonArr.map((item) => {
-    return {name: item.name, 
+    return {
+            name: capitalizeFirstLetter(item.name), 
             img: item.sprites.front_default,
-            id: item.id}; 
+            id: item.id,
+            beenChosen: false,
+          }; 
   });
 }
 

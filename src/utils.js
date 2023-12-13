@@ -22,4 +22,8 @@ function containsObject(obj, list) {
   return false;
 }
 
-export { fetchData, containsObject }
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export { fetchData, containsObject, capitalizeFirstLetter }
