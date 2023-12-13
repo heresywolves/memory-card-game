@@ -31,6 +31,12 @@ function App() {
     console.log('new card number: ' + numberOfCards);
   }, [difficulty, numberOfCards])
 
+  useEffect(() => {
+    if (score === maxScore) {
+      setGameWon(true);
+    }
+  }, [score, maxScore]);
+
   async function startGame() {
     setMenuShown(false);
     const pokemonsArr = await fetchPokemonData(numberOfCards, setLoading);
@@ -41,6 +47,10 @@ function App() {
 
   return (
     <>
+      {gameWon && <WinScreen
+      />} 
+      {gameLost && <LoseScreen
+      />}
       {menuShown && <Menu 
         difficulty={difficulty}
         setDifficulty={setDifficulty}
@@ -57,9 +67,26 @@ function App() {
         devMode={devMode}
         setScore={setScore}
         score={score}
+        setGameLost={setGameLost}
         />}
       {loading && <Loading/>}
     </>
+  )
+}
+
+function WinScreen() {
+  return (
+    <div className='win-screen'>
+      <p>You win!</p>
+    </div>
+  )
+}
+
+function LoseScreen() {
+  return (
+    <div className='lose-screen'>
+      <p>You lose!</p>
+    </div>
   )
 }
 
@@ -71,7 +98,7 @@ function Loading() {
   )
 }
 
-function Deck({deck, setDeck, devMode, setScore, score}) {
+function Deck({deck, setDeck, devMode, setScore, score, setGameLost}) {
 
   function pickCard(e) {
     const cardId = +e.target.closest('.card').dataset.key;
@@ -79,6 +106,7 @@ function Deck({deck, setDeck, devMode, setScore, score}) {
     const updatedDeck = deck.map((card) => {
       if (card.id === cardId) {
         if (card.beenChosen) {
+          setGameLost(true);
           setScore(0);
         }
         else {
@@ -119,7 +147,8 @@ Deck.propTypes = {
   setDeck: PropTypes.func.isRequired,
   devMode: PropTypes.bool.isRequired,
   setScore: PropTypes.func.isRequired,
-  score: PropTypes.number.isRequired
+  score: PropTypes.number.isRequired,
+  setGameLost: PropTypes.func.isRequired,
 };
 
 function Score({maxScore, score}) {

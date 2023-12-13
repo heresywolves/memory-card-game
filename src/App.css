@@ -79,3 +79,14 @@ body {
 .card img {
   width: 100px;
 }
+
+.win-screen, .lose-screen {
+  z-index: 9;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+}
