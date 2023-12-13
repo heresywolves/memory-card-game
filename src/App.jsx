@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import PropTypes from 'prop-types';
-import {fetchData, containsObject, capitalizeFirstLetter} from './utils'
+import {fetchData, containsObject, capitalizeFirstLetter, shuffleDeck} from './utils'
 
 function App() {
   const [menuShown, setMenuShown] = useState(true);
@@ -9,14 +9,27 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [deck, setDeck] = useState([]);
   const [devMode, setDevMode] = useState(true);
-  let numberOfCards = 4;
+  const [maxScore, setMaxScore] = useState(4);
+  const [score, setScore] = useState(0);
+  const [numberOfCards, setNumberOfCards] = useState(4);
+  const [gameLost, setGameLost] = useState(false);
+  const [gameWon, setGameWon] = useState(false);
 
   useEffect(() => {
-    if (difficulty === 'easy') numberOfCards = 4;
-    else if (difficulty === 'medium') numberOfCards = 8;
-    else if (difficulty === 'hard') numberOfCards = 12;
+    if (difficulty === 'easy') {
+      setNumberOfCards(4);
+      setMaxScore(4);
+    }
+    else if (difficulty === 'medium') {
+      setNumberOfCards(8);
+      setMaxScore(8);
+    }
+    else if (difficulty === 'hard') {
+      setNumberOfCards(12);
+      setMaxScore(12);
+    }
     console.log('new card number: ' + numberOfCards);
-  }, [difficulty])
+  }, [difficulty, numberOfCards])
 
   async function startGame() {
     setMenuShown(false);
@@ -34,10 +47,16 @@ function App() {
         menuShown={menuShown}
         startGame={startGame}
         />}
+      {maxScore && <Score
+        maxScore={maxScore}
+        score={score}
+      />}
       {deck && <Deck
         deck={deck} 
         setDeck={setDeck}
         devMode={devMode}
+        setScore={setScore}
+        score={score}
         />}
       {loading && <Loading/>}
     </>
@@ -52,19 +71,25 @@ function Loading() {
   )
 }
 
-function Deck({deck, setDeck, devMode}) {
+function Deck({deck, setDeck, devMode, setScore, score}) {
 
   function pickCard(e) {
     const cardId = +e.target.closest('.card').dataset.key;
 
     const updatedDeck = deck.map((card) => {
       if (card.id === cardId) {
-        return {...card, beenChosen: true};
+        if (card.beenChosen) {
+          setScore(0);
+        }
+        else {
+          setScore(++score)
+          return {...card, beenChosen: true};
+        }
       }
       return card;
     });
-
-    setDeck(updatedDeck);
+    let updatedShuffledDeck = shuffleDeck(updatedDeck);
+    setDeck(updatedShuffledDeck);
   }
 
   return (
@@ -92,7 +117,18 @@ Deck.propTypes = {
     })
   ),
   setDeck: PropTypes.func.isRequired,
+  devMode: PropTypes.bool.isRequired,
+  setScore: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired
 };
+
+function Score({maxScore, score}) {
+  return (
+    <div className='score-container'>
+      <p>{`Score: ${score} / ${maxScore}`}</p>
+    </div>
+  )
+}
 
 async function fetchPokemonData(numberOfCards, setLoading) {
   setLoading(true);

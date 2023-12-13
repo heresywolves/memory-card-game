@@ -26,4 +26,17 @@ function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export { fetchData, containsObject, capitalizeFirstLetter }
+function shuffleDeck(deck) {
+  const shuffledDeck = [...deck];
+  for (let i = shuffledDeck.length - 1; i > 0; i--) {
+    //Generate a random index
+    const j = Math.floor(Math.random() * (i + 1));
+    // Swap elements ar i and j
+    const temp = shuffledDeck[i];
+    shuffledDeck[i] = shuffledDeck[j];
+    shuffledDeck[j] = temp;
+  }
+  return shuffledDeck;
+}
+
+export { fetchData, containsObject, capitalizeFirstLetter, shuffleDeck }
