@@ -39,3 +39,16 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+/* Loading screen */
+
+.loading-screen {
+  z-index: 10;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(237, 237, 237);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

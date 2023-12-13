@@ -19,7 +19,8 @@ function App() {
 
   async function startGame() {
     setMenuShown(false);
-    const pokemonsArr = await fetchPokemonData(numberOfCards);
+    const pokemonsArr = await fetchPokemonData(numberOfCards, setLoading);
+    setLoading(false);
     console.log(pokemonsArr);
     setDeck(pokemonsArr);
   }
@@ -31,11 +32,20 @@ function App() {
         setDifficulty={setDifficulty}
         menuShown={menuShown}
         startGame={startGame}
-      />}
+        />}
       {deck && <Deck
         deck={deck} 
-      />}
+        />}
+      {loading && <Loading/>}
     </>
+  )
+}
+
+function Loading() {
+  return (
+    <div className='loading-screen'>
+      <p>Loading...</p>
+    </div>
   )
 }
 
@@ -60,7 +70,8 @@ Deck.propTypes = {
   )
 };
 
-async function fetchPokemonData(numberOfCards, loading) {
+async function fetchPokemonData(numberOfCards, setLoading) {
+  setLoading(true);
   const data = await fetchData('https://pokeapi.co/api/v2/pokemon/?limit=1000');
   const pokemonArr = [];
   for (let i = 0; i < numberOfCards; i++) {
