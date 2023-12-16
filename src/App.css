@@ -175,6 +175,7 @@ svg{
 .win-screen p, .lose-screen p{
   transform: translate(0,-50%);
 }
+
 /* Wallpaper */
 
 img.background {
@@ -210,3 +211,15 @@ img.background {
   transition: 0.5s;
 }
 
+/* Sound control */
+
+.sound-control-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  position: fixed;
+  top: 34px;
+  left: 90%;
+  cursor: pointer;
+}

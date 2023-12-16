@@ -3,7 +3,11 @@ import './App.css'
 import PropTypes from 'prop-types';
 import {fetchData, containsObject, capitalizeFirstLetter, shuffleDeck} from './utils'
 import backgroundImg from './assets/wallpaper.jpg';
-import loadingImg from './assets/loading.gif'
+import backgroundMusicSrc from './assets/background-music.wav';
+import winSoundSrc from './assets/win-sound.wav';
+import loseSoundSrc from './assets/lose-sound.wav';
+import soundOnImg from './assets/soundon.svg'
+import soundOffImg from './assets/soundoff.svg'
 
 function App() {
   const [menuShown, setMenuShown] = useState(true);
@@ -16,9 +20,10 @@ function App() {
   const [gameLost, setGameLost] = useState(false);
   const [gameWon, setGameWon] = useState(false);
   const [pokemonApiData, setPokemonApiData] = useState(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
   let devMode = false;
   
-
   useEffect(() => {
     if (difficulty === 'easy') {
       setNumberOfCards(4);
@@ -39,9 +44,16 @@ function App() {
       setGameWon(true);
     }
   }, [score, maxScore]);
-
-  async function startGame() {
-
+  
+  
+  async function startGame(isMusicPlaying, setIsMusicPlaying) {
+    if (!isMusicPlaying) {
+      const music = document.querySelector('#background-audio');
+      music.play();
+      setIsMusicPlaying(true);
+      music.volume = 0.2;
+      music.loop = true;
+    }
     setMenuShown(false);
     const pokemonsArr = await fetchPokemonData(numberOfCards, setLoading, pokemonApiData, setPokemonApiData);
     setLoading(false);
@@ -68,12 +80,18 @@ function App() {
         difficulty={difficulty}
         setDifficulty={setDifficulty}
         menuShown={menuShown}
-        startGame={startGame}
+        startGame={() => {startGame(isMusicPlaying, setIsMusicPlaying)} }
         />}
       {maxScore && <Score
         maxScore={maxScore}
         score={score}
       />}
+      <SoundControl
+        soundOn={soundOn}
+        setSoundOn={setSoundOn}
+        soundOffImg={soundOffImg}
+        soundOnImg={soundOnImg}
+      />
       {deck && <Deck
         deck={deck} 
         setDeck={setDeck}
@@ -83,12 +101,39 @@ function App() {
         setGameLost={setGameLost}
         />}
       {loading && <Loading/>}
+      <audio id="background-audio" src={backgroundMusicSrc} autoPlay/>
     </>
+  )
+}
+
+function SoundControl({soundOn, setSoundOn, soundOffImg, soundOnImg}) {
+  function toggleSound() {
+    const music = document.querySelector('#background-audio');
+    if (soundOn) {
+      music.muted = true;
+    } else {
+      music.muted = false;
+    }
+
+    setSoundOn(!soundOn)
+  }
+  return (
+    <div className='sound-control-container'>
+      <img 
+        src={(soundOn) ? soundOnImg : soundOffImg} 
+        onClick={toggleSound}
+        width={50}
+        alt="Sound Control Icon" />
+    </div>
   )
 }
 
 
 function WinScreen({resetGame}) {
+  const winSound = new Audio(winSoundSrc);
+  winSound.preload = 'auto';
+  winSound.play();
+  winSound.volume = 0.2;
   return (
     <div onClick={resetGame} className='win-screen'>
       <p>You win!</p>
@@ -97,6 +142,10 @@ function WinScreen({resetGame}) {
 }
 
 function LoseScreen({resetGame}) {
+  const loseSound = new Audio(loseSoundSrc);
+  loseSound.preload = 'auto';
+  loseSound.play();
+  loseSound.volume = 0.2;
   return (
     <div onClick={resetGame} className='lose-screen'>
       <p>You lose!</p>
@@ -108,7 +157,7 @@ function Loading() {
   return (
     <div className='loading-screen'>
       {/* <img src={loadingImg} alt="Loading icon" /> */}
-    <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       viewBox="0 0 100 100" enableBackground="new 0 0 0 0" xmlSpace="preserve">
         <rect x="20" y="50" width="4" height="10" fill="#fff">
           <animateTransform attributeType="xml"
@@ -135,7 +184,7 @@ function Loading() {
 }
 
 function Deck({deck, setDeck, devMode, setScore, score, setGameLost}) {
-
+  
   function pickCard(e) {
     const cardId = +e.target.closest('.card').dataset.key;
 
