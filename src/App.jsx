@@ -126,7 +126,7 @@ function SoundControl({soundOn, setSoundOn, soundOffImg, soundOnImg}) {
       <img 
         src={(soundOn) ? soundOnImg : soundOffImg} 
         onClick={toggleSound}
-        width={50}
+        width={40}
         alt="Sound Control Icon" />
     </div>
   )
@@ -134,8 +134,6 @@ function SoundControl({soundOn, setSoundOn, soundOffImg, soundOnImg}) {
 
 
 function WinScreen({resetGame}) {
-  // const winSound = new Audio(winSoundSrc);
-  // winSound.preload = 'auto';
   const winSound = document.querySelector('#win-audio');
   winSound.play();
   winSound.volume = 0.2;
@@ -147,8 +145,6 @@ function WinScreen({resetGame}) {
 }
 
 function LoseScreen({resetGame}) {
-  // const loseSound = new Audio(loseSoundSrc);
-  // loseSound.preload = 'auto';
   const loseSound = document.querySelector('#lose-audio');
   loseSound.play();
   loseSound.volume = 0.2;

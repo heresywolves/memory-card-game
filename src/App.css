@@ -219,7 +219,7 @@ img.background {
   align-items: center;
   z-index: 9;
   position: fixed;
-  top: 34px;
+  top: 38px;
   left: 90%;
   cursor: pointer;
 }
