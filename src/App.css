@@ -111,6 +111,8 @@ body {
   color: white;
 }
 
+/* Win and lose screens */
+
 .win-screen, .lose-screen {
   z-index: 9;
   position: fixed;
@@ -122,4 +124,16 @@ body {
   background-color: white;
   height: 100vh;
   width: 100vw;
+}
+
+/* Wallpaper */
+
+img.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
 }

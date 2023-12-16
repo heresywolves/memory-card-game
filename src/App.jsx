@@ -3,6 +3,7 @@ import './App.css'
 import PropTypes from 'prop-types';
 import {fetchData, containsObject, capitalizeFirstLetter, shuffleDeck} from './utils'
 import cardBgImg from './assets/card-background.png';
+import backgroundImg from './assets/wallpaper.jpg';
 
 function App() {
   const [menuShown, setMenuShown] = useState(true);
@@ -55,6 +56,7 @@ function App() {
 
   return (
     <>
+      <img src={backgroundImg} className='background'></img>
       {gameWon && <WinScreen
         resetGame={resetGame}
       />} 
