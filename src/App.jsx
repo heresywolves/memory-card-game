@@ -102,18 +102,22 @@ function App() {
         />}
       {loading && <Loading/>}
       <audio id="background-audio" src={backgroundMusicSrc} autoPlay/>
+      <audio id="win-audio" src={winSoundSrc}/>
+      <audio id="lose-audio" src={loseSoundSrc}/>
     </>
   )
 }
 
 function SoundControl({soundOn, setSoundOn, soundOffImg, soundOnImg}) {
   function toggleSound() {
-    const music = document.querySelector('#background-audio');
-    if (soundOn) {
-      music.muted = true;
-    } else {
-      music.muted = false;
-    }
+    const audio = document.querySelectorAll('audio');
+    audio.forEach((el) => {
+      if (soundOn) {
+        el.muted = true;
+      } else {
+        el.muted = false;
+      }
+    })
 
     setSoundOn(!soundOn)
   }
@@ -130,8 +134,9 @@ function SoundControl({soundOn, setSoundOn, soundOffImg, soundOnImg}) {
 
 
 function WinScreen({resetGame}) {
-  const winSound = new Audio(winSoundSrc);
-  winSound.preload = 'auto';
+  // const winSound = new Audio(winSoundSrc);
+  // winSound.preload = 'auto';
+  const winSound = document.querySelector('#win-audio');
   winSound.play();
   winSound.volume = 0.2;
   return (
@@ -142,8 +147,9 @@ function WinScreen({resetGame}) {
 }
 
 function LoseScreen({resetGame}) {
-  const loseSound = new Audio(loseSoundSrc);
-  loseSound.preload = 'auto';
+  // const loseSound = new Audio(loseSoundSrc);
+  // loseSound.preload = 'auto';
+  const loseSound = document.querySelector('#lose-audio');
   loseSound.play();
   loseSound.volume = 0.2;
   return (
