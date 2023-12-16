@@ -83,10 +83,21 @@ body {
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgb(237, 237, 237);
+  background-color: rgb(46, 46, 46);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  font-size: 25px;
+}
+
+
+svg{
+  width: 100px;
+  height: 100px;
+  display:inline-block;
+  position: relative;
+  left: 15px;
 }
 
 /* Deck */
@@ -131,7 +142,6 @@ body {
   transition: scale 1s;
   background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.9), rgba(54, 113, 231, 0.9));
   /* background-color: rgba(189, 189, 189, 0.3); */
-
   /* backdrop-filter: blur(10px); */
 }
 
@@ -148,18 +158,23 @@ body {
 /* Win and lose screens */
 
 .win-screen, .lose-screen {
-  z-index: 9;
+  font-size: 40px;
+  z-index: 18 !important;
   position: fixed;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: rgba(0,0,0,0.7);
   height: 100vh;
   width: 100vw;
+  backdrop-filter: blur(10px);
 }
 
+.win-screen p, .lose-screen p{
+  transform: translate(0,-50%);
+}
 /* Wallpaper */
 
 img.background {
@@ -176,7 +191,7 @@ img.background {
 
 .score-container {
   position: fixed;
-  top: 0;
+  top: 40px;
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 10;
