@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&display=swap');
+
+* {
+  font-family: 'Pixelify Sans', sans-serif;
+  text-shadow: 
+    -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  color: white;
+}
 
 body {
   margin: 0;
@@ -99,13 +110,9 @@ body {
   width: 100px;
   border-radius: 20px;
   transition: scale 1s;
-  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.3), rgba(54, 113, 231, 0.55));
-  /* background-color: rgba(189, 189, 189, 0.3); */
-  text-shadow: 
-    -1px -1px 0 #000,  
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+  /* background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.3), rgba(54, 113, 231, 0.55)); */
+  background-color: rgba(189, 189, 189, 0.3);
+
   backdrop-filter: blur(10px);
 }
 
