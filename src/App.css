@@ -99,6 +99,14 @@ body {
   width: 100px;
   border-radius: 20px;
   transition: scale 1s;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.3), rgba(54, 113, 231, 0.55));
+  /* background-color: rgba(189, 189, 189, 0.3); */
+  text-shadow: 
+    -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  backdrop-filter: blur(10px);
 }
 
 .card img {
@@ -136,4 +144,27 @@ img.background {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
+}
+
+/* Score */
+
+.score-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 10;
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+.progress-bar-container {
+  border: solid 4px rgb(27, 27, 27);
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background-color: yellow;
+  border-radius: 8px;
+  transition: 0.5s;
 }

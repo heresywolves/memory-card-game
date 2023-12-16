@@ -174,11 +174,11 @@ function Deck({deck, setDeck, devMode, setScore, score, setGameLost}) {
             onMouseLeave={resetCardRotation}
             className={`card`}
             >
-            <img src={cardBgImg} alt="Card Background"  className='card-bg'/>
+            {/* <img src={cardBgImg} alt="Card Background"  className='card-bg'/> */}
             <img key={card.id} src={card.img}></img>
             <p>{card.name}</p>
             {devMode && (
-              (card.beenChosen ? 'been chosen' : 'not chosen')
+              (card.beenChosen ? <p>been chosen</p> : <p>not chosen</p>)
             )}
           </div>
         )
@@ -202,9 +202,22 @@ Deck.propTypes = {
 };
 
 function Score({maxScore, score}) {
+  const progressContainerWidth = maxScore * 50;
+  const height = '30px';
+  const progressWidth = score * 50;
+
   return (
     <div className='score-container'>
-      <p>{`Score: ${score} / ${maxScore}`}</p>
+      {/* <p>{`Score: ${score} / ${maxScore}`}</p> */}
+      <div style={{
+        width: progressContainerWidth,
+        height: height
+        }} className='progress-bar-container'>
+        <div style={{
+          width: progressWidth,
+          height: height
+        }} className="progress-bar"></div>
+      </div>
     </div>
   )
 }
