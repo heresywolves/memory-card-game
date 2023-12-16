@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import PropTypes from 'prop-types';
 import {fetchData, containsObject, capitalizeFirstLetter, shuffleDeck} from './utils'
-import cardBgImg from './assets/card-background.png';
 import backgroundImg from './assets/wallpaper.jpg';
 
 function App() {
@@ -15,7 +14,9 @@ function App() {
   const [numberOfCards, setNumberOfCards] = useState(4);
   const [gameLost, setGameLost] = useState(false);
   const [gameWon, setGameWon] = useState(false);
-  let devMode = true;
+  const [pokemonApiData, setPokemonApiData] = useState(null);
+  let devMode = false;
+  
 
   useEffect(() => {
     if (difficulty === 'easy') {
@@ -39,11 +40,10 @@ function App() {
   }, [score, maxScore]);
 
   async function startGame() {
-    console.log('starting game')
+
     setMenuShown(false);
-    const pokemonsArr = await fetchPokemonData(numberOfCards, setLoading);
+    const pokemonsArr = await fetchPokemonData(numberOfCards, setLoading, pokemonApiData, setPokemonApiData);
     setLoading(false);
-    console.log(pokemonsArr);
     setDeck(pokemonsArr);
   }
 
@@ -223,6 +223,7 @@ function Score({maxScore, score}) {
 }
 
 async function fetchPokemonData(numberOfCards, setLoading) {
+  
   setLoading(true);
   const data = await fetchData('https://pokeapi.co/api/v2/pokemon/?limit=1000');
   const pokemonArr = [];
@@ -240,8 +241,6 @@ async function fetchPokemonData(numberOfCards, setLoading) {
     const pokemonObj = await fetchData(pokemonArr[i].url);
     newPokemonArr.push(pokemonObj);
   }
-
-  console.log(newPokemonArr);  
 
   return newPokemonArr.map((item) => {
     return {
