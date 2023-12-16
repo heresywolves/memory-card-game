@@ -1,8 +1,8 @@
-# React + Vite
+# Memory Pokemon card game 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This card game is built with React + Vite.
+The rules are simple:
+- Choose a card from the deck layout that has not been chosen by you before.
+- With each turn, the deck shuffles.
+- If you choose a card that has been chosen - you lose.
+- To win, click on every Pokemon card from the deck only once.

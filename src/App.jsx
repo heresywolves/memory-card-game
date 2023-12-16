@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import PropTypes from 'prop-types';
 import {fetchData, containsObject, capitalizeFirstLetter, shuffleDeck} from './utils'
+import cardBgImg from './assets/card-background.png';
 
 function App() {
   const [menuShown, setMenuShown] = useState(true);
@@ -28,7 +29,6 @@ function App() {
       setNumberOfCards(12);
       setMaxScore(12);
     }
-    console.log('new card number: ' + numberOfCards);
   }, [difficulty, numberOfCards])
 
   useEffect(() => {
@@ -38,6 +38,7 @@ function App() {
   }, [score, maxScore]);
 
   async function startGame() {
+    console.log('starting game')
     setMenuShown(false);
     const pokemonsArr = await fetchPokemonData(numberOfCards, setLoading);
     setLoading(false);
@@ -129,11 +130,49 @@ function Deck({deck, setDeck, devMode, setScore, score, setGameLost}) {
     setDeck(updatedShuffledDeck);
   }
 
+  function rotateToMouse(e) {
+    const card = e.target.closest('.card');
+    const cardRect = card.getBoundingClientRect();
+    const img = card.querySelector('img');
+
+    // Calculate the position of the mouse relative to the card
+    const mouseX = e.clientX - cardRect.left;
+    const mouseY = e.clientY - cardRect.top;
+
+    // Calculate the rotation angles based on the mouse position
+    const rotateX = (mouseY / cardRect.height - 0.5) * 40; // Adjust the rotation factor as needed
+    const rotateY = -(mouseX / cardRect.width - 0.5) * 40; 
+
+    // Apply the rotation
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    img.style.transfrom = `scale(3);`
+
+    // Create a box shadow to give the illusion of elevation
+    const shadowX = (mouseX / cardRect.width - 0.5) * 10; // Adjust the shadow factor as needed
+    const shadowY = (mouseY / cardRect.height - 0.5) * 10; // Adjust the shadow factor as needed
+    const shadowSpread = 10; // Adjust the shadow spread as needed
+
+    card.style.boxShadow = `${shadowX}px ${shadowY}px ${shadowSpread}px rgba(0, 0, 0, 0.3)`;
+  }
+
+  function resetCardRotation(e) {
+    const card = e.target.closest('.card');
+    card.style.transform = 'none';
+  }
+
   return (
     <div className='deck-container'>
       {deck.map((card) => {
         return (
-          <div key={card.id} data-key={card.id} onClick={pickCard} className={`card`}>
+          <div 
+            key={card.id} 
+            data-key={card.id} 
+            onClick={pickCard} 
+            onMouseMove={rotateToMouse}
+            onMouseLeave={resetCardRotation}
+            className={`card`}
+            >
+            <img src={cardBgImg} alt="Card Background"  className='card-bg'/>
             <img key={card.id} src={card.img}></img>
             <p>{card.name}</p>
             {devMode && (
